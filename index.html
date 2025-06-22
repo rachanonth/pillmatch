@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PillMatch - Contraceptive Selection Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">PillMatch</h1>
+            <p class="subtitle">Contraceptive Selection Tool</p>
+        </header>
+
+        <main class="main-content">
+            <div class="form-container">
+                <h2 class="form-title">BMI & Age Assessment</h2>
+                <p class="form-description">Enter your measurements and age to determine your group for contraceptive recommendations.</p>
+
+                <form id="bmiForm" class="bmi-form">
+                    <div class="input-group">
+                        <label for="age" class="input-label">Age (years)</label>
+                        <input 
+                            type="number" 
+                            id="age" 
+                            name="age" 
+                            class="input-field" 
+                            placeholder="e.g., 25" 
+                            min="13" 
+                            max="100" 
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label for="weight" class="input-label">Weight (kg)</label>
+                        <input 
+                            type="number" 
+                            id="weight" 
+                            name="weight" 
+                            class="input-field" 
+                            placeholder="e.g., 65.5" 
+                            step="0.1" 
+                            min="20" 
+                            max="300" 
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label for="height" class="input-label">Height (cm)</label>
+                        <input 
+                            type="number" 
+                            id="height" 
+                            name="height" 
+                            class="input-field" 
+                            placeholder="e.g., 165" 
+                            step="0.1" 
+                            min="100" 
+                            max="250" 
+                            required
+                        >
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="healthConditions" name="healthConditions" class="checkbox">
+                            <span class="checkmark"></span>
+                            I have health conditions that may affect contraceptive selection
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Calculate BMI & Group</button>
+                </form>
+            </div>
+
+            <div id="results" class="results-container" style="display: none;">
+                <h2 class="results-title">Your Results</h2>
+                
+                <div class="result-card">
+                    <div class="result-item">
+                        <span class="result-label">Your Age:</span>
+                        <span id="ageValue" class="result-value"></span>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-label">Age Group:</span>
+                        <span id="ageGroup" class="result-value age-badge"></span>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-label">Your BMI:</span>
+                        <span id="bmiValue" class="result-value"></span>
+                    </div>
+                    
+                    <div class="result-item">
+                        <span class="result-label">BMI Category:</span>
+                        <span id="bmiCategory" class="result-value"></span>
+                    </div>
+                    
+                    <div class="result-item">
+                        <span class="result-label">BMI Group:</span>
+                        <span id="bmiGroup" class="result-value group-badge"></span>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-label">Final Result:</span>
+                        <span id="finalResult" class="result-value final-badge"></span>
+                    </div>
+                </div>
+
+                <div class="group-info-toggle">
+                    <button id="toggleGroupInfo" class="toggle-info-btn">
+                        <span class="toggle-text">Show Group Information</span>
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <div id="groupInfo" class="group-info" style="display: none;">
+                    <h3>Group Information</h3>
+                    
+                    <div class="info-section">
+                        <h4>Age Groups</h4>
+                        <div class="group-grid">
+                            <div class="group-item">
+                                <span class="group-name age-young">Young</span>
+                                <span class="group-range">Age < 19 years</span>
+                            </div>
+                            <div class="group-item">
+                                <span class="group-name age-adult">Adult</span>
+                                <span class="group-range">Age 19 - 40 years</span>
+                            </div>
+                            <div class="group-item">
+                                <span class="group-name age-mature">Mature</span>
+                                <span class="group-range">Age > 40 years</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h4>BMI Groups</h4>
+                        <div class="group-grid">
+                            <div class="group-item">
+                                <span class="group-name group-underweight">Group 1</span>
+                                <span class="group-range">BMI < 18.5</span>
+                            </div>
+                            <div class="group-item">
+                                <span class="group-name group-normal">Group 2</span>
+                                <span class="group-range">BMI 18.5 - 25</span>
+                            </div>
+                            <div class="group-item">
+                                <span class="group-name group-overweight">Group 3</span>
+                                <span class="group-range">BMI 25 - 30</span>
+                            </div>
+                            <div class="group-item">
+                                <span class="group-name group-obese">Group 4</span>
+                                <span class="group-range">BMI > 30</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="group-note">Note: Users with health conditions are automatically assigned to BMI Group 4 regardless of calculated BMI. Final result combines both age group and BMI group.</p>
+                </div>
+
+                <!-- Pills Recommendations Section -->
+                <div class="pills-section">
+                    <div class="pills-header">
+                        <h3>Contraceptive Pill Recommendations</h3>
+                        <p class="pills-subtitle">Based on your age group and BMI group, here are the recommended contraceptive pills:</p>
+                        
+                        <div class="pills-controls">
+                            <div class="control-group">
+                                <label for="categoryFilter" class="control-label">Filter by Category:</label>
+                                <select id="categoryFilter" class="control-select">
+                                    <option value="all">All Categories</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label class="control-label">Display Options:</label>
+                                <div class="toggle-group">
+                                    <label class="toggle-label">
+                                        <input type="checkbox" id="showBrandNames" class="toggle-checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                        Show Brand Names
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="pillsContainer" class="pills-container">
+                        <!-- Pills will be dynamically populated here -->
+                    </div>
+
+                    <div id="noPillsMessage" class="no-pills-message" style="display: none;">
+                        <p>No specific pill recommendations available for your group combination. Please consult with a healthcare provider for personalized recommendations.</p>
+                    </div>
+                </div>
+
+                <button id="resetBtn" class="reset-btn">Calculate Again</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="pills-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PillMatch Admin - Contraceptive Pills Management</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1 class="admin-title">PillMatch Admin</h1>
+            <p class="admin-subtitle">Contraceptive Pills Management</p>
+        </header>
+
+        <main class="admin-main">
+            <!-- Navigation -->
+            <nav class="admin-nav">
+                <button id="viewPillsBtn" class="nav-btn active">View All Pills</button>
+                <button id="addPillBtn" class="nav-btn">Add New Pill</button>
+                <button id="exportDataBtn" class="nav-btn">Export Data</button>
+                <button id="importDataBtn" class="nav-btn">Import Data</button>
+            </nav>
+
+            <!-- Pills List Section -->
+            <section id="pillsListSection" class="admin-section">
+                <div class="section-header">
+                    <h2>Contraceptive Pills Database</h2>
+                    <div class="search-controls">
+                        <input type="text" id="searchPills" placeholder="Search pills..." class="search-input">
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="all">All Categories</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pills-table-container">
+                    <table id="pillsTable" class="pills-table">
+                        <thead>
+                            <tr>
+                                <th>Generic Name</th>
+                                <th>Category</th>
+                                <th>Brand Names</th>
+                                <th>Suitable Groups</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pillsTableBody">
+                            <!-- Pills will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Add/Edit Pill Section -->
+            <section id="pillFormSection" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h2 id="formTitle">Add New Pill</h2>
+                    <button id="closeFormBtn" class="close-btn">×</button>
+                </div>
+
+                <form id="pillForm" class="pill-form">
+                    <input type="hidden" id="editIndex" value="">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="genericName" class="form-label">Generic Name *</label>
+                            <input type="text" id="genericName" name="genericName" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="category" class="form-label">Category *</label>
+                            <select id="category" name="category" class="form-select" required>
+                                <option value="">Select Category</option>
+                                <option value="Combined Oral Contraceptive">Combined Oral Contraceptive</option>
+                                <option value="Progestin-Only Pill">Progestin-Only Pill</option>
+                                <option value="Extended Cycle Pill">Extended Cycle Pill</option>
+                                <option value="Low-Dose Combined Pill">Low-Dose Combined Pill</option>
+                                <option value="Combined Pill (High BMI)">Combined Pill (High BMI)</option>
+                                <option value="Emergency Contraception">Emergency Contraception</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description" class="form-label">Description *</label>
+                        <textarea id="description" name="description" class="form-textarea" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="brandNames" class="form-label">Brand Names *</label>
+                        <div class="brand-names-container">
+                            <div id="brandNamesList" class="brand-names-list">
+                                <!-- Brand names will be added here -->
+                            </div>
+                            <div class="brand-names-input">
+                                <input type="text" id="brandNameInput" placeholder="Enter brand name" class="form-input">
+                                <button type="button" id="addBrandBtn" class="add-btn">Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Suitable Groups *</label>
+                        <div class="groups-grid">
+                            <div class="group-column">
+                                <h4>Young (< 19 years)</h4>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Young - BMI Group 1">
+                                    <span class="checkmark"></span>
+                                    BMI Group 1 (< 18.5)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Young - BMI Group 2">
+                                    <span class="checkmark"></span>
+                                    BMI Group 2 (18.5 - 25)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Young - BMI Group 3">
+                                    <span class="checkmark"></span>
+                                    BMI Group 3 (25 - 30)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Young - BMI Group 4">
+                                    <span class="checkmark"></span>
+                                    BMI Group 4 (> 30)
+                                </label>
+                            </div>
+                            
+                            <div class="group-column">
+                                <h4>Adult (19 - 40 years)</h4>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Adult - BMI Group 1">
+                                    <span class="checkmark"></span>
+                                    BMI Group 1 (< 18.5)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Adult - BMI Group 2">
+                                    <span class="checkmark"></span>
+                                    BMI Group 2 (18.5 - 25)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Adult - BMI Group 3">
+                                    <span class="checkmark"></span>
+                                    BMI Group 3 (25 - 30)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Adult - BMI Group 4">
+                                    <span class="checkmark"></span>
+                                    BMI Group 4 (> 30)
+                                </label>
+                            </div>
+                            
+                            <div class="group-column">
+                                <h4>Mature (> 40 years)</h4>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Mature - BMI Group 1">
+                                    <span class="checkmark"></span>
+                                    BMI Group 1 (< 18.5)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Mature - BMI Group 2">
+                                    <span class="checkmark"></span>
+                                    BMI Group 2 (18.5 - 25)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Mature - BMI Group 3">
+                                    <span class="checkmark"></span>
+                                    BMI Group 3 (25 - 30)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="groups" value="Mature - BMI Group 4">
+                                    <span class="checkmark"></span>
+                                    BMI Group 4 (> 30)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Save Pill</button>
+                        <button type="button" id="cancelBtn" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Import/Export Section -->
+            <section id="dataSection" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h2 id="dataTitle">Data Management</h2>
+                </div>
+                
+                <div class="data-actions">
+                    <div class="action-card">
+                        <h3>Export Database</h3>
+                        <p>Download the current pills database as a JSON file</p>
+                        <button id="exportBtn" class="action-btn">Export JSON</button>
+                    </div>
+                    
+                    <div class="action-card">
+                        <h3>Import Database</h3>
+                        <p>Upload a JSON file to replace the current database</p>
+                        <input type="file" id="importFile" accept=".json" style="display: none;">
+                        <button id="importBtn" class="action-btn">Choose File</button>
+                        <div id="importStatus" class="import-status"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3 id="modalTitle">Confirm Action</h3>
+            <p id="modalMessage">Are you sure you want to perform this action?</p>
+            <div class="modal-actions">
+                <button id="confirmBtn" class="confirm-btn">Confirm</button>
+                <button id="cancelModalBtn" class="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="pills-data.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html> 
